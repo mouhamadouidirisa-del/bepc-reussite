@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#087f5b">
+<title>BEPC RÉUSSITE</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f2f7f5;color:#123}
+header{background:linear-gradient(135deg,#086f50,#16a085);color:#fff;padding:28px 18px 24px;border-radius:0 0 28px 28px}
+h1{margin:0;font-size:30px}header p{margin:8px 0 0;font-size:16px}
+main{max-width:720px;margin:auto;padding:20px 16px 40px}.card{background:#fff;border-radius:20px;padding:20px;margin:15px 0;box-shadow:0 6px 20px #00000010}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.subject{border:0;border-radius:18px;padding:18px 12px;background:#eaf7f2;font-size:17px;font-weight:700;color:#086f50;min-height:95px}
+.subject span{display:block;font-size:30px;margin-bottom:7px}
+button{cursor:pointer}.primary{width:100%;border:0;border-radius:15px;background:#086f50;color:#fff;padding:14px;font-size:17px;font-weight:700}
+.back{border:0;background:none;color:#086f50;font-weight:700;padding:8px 0}.question{font-size:20px;font-weight:700;line-height:1.4}
+.option{display:block;width:100%;text-align:left;border:2px solid #dce8e4;background:#fff;border-radius:14px;padding:14px;margin:10px 0;font-size:16px}
+.option.selected{border-color:#086f50;background:#eaf7f2}.option.correct{border-color:#168a57;background:#dff7e8}.option.wrong{border-color:#c43d3d;background:#ffe7e7}
+.small{color:#667;font-size:14px}.score{text-align:center;font-size:46px;font-weight:800;color:#086f50}
+.hidden{display:none}.bar{height:10px;background:#e3ece9;border-radius:10px;overflow:hidden}.fill{height:100%;background:#16a085;width:0}
+</style>
+</head>
+<body>
+<header><h1>📚 BEPC RÉUSSITE</h1><p>Réussis ton BEPC en t'amusant !</p></header>
+<main>
+<section id="home" class="card">
+<h2>Choisis ta matière</h2>
+<p class="small">Quiz de 5 questions • correction immédiate • score sur 5</p>
+<div class="grid">
+<button class="subject" onclick="start('Maths')"><span>🔢</span>Maths</button>
+<button class="subject" onclick="start('Physique-Chimie')"><span>🧪</span>Physique-Chimie</button>
+<button class="subject" onclick="start('SVT')"><span>🌿</span>SVT</button>
+<button class="subject" onclick="start('Histoire-Géo')"><span>🌍</span>Histoire-Géo</button>
+<button class="subject" onclick="start('Français')"><span>📖</span>Français</button>
+</div>
+</section>
+
+<section id="quiz" class="card hidden">
+<button class="back" onclick="goHome()">← Retour</button>
+<h2 id="subject"></h2>
+<div class="bar"><div id="fill" class="fill"></div></div>
+<p id="counter" class="small"></p>
+<div id="question" class="question"></div>
+<div id="options"></div>
+<button id="next" class="primary hidden" onclick="nextQuestion()">Question suivante</button>
+</section>
+
+<section id="result" class="card hidden">
+<h2>🎉 Résultat</h2>
+<div id="score" class="score"></div>
+<p id="message" style="text-align:center"></p>
+<button class="primary" onclick="goHome()">Revenir aux matières</button>
+</section>
+</main>
+<script>
+const data={
+"Maths":[
+["Résous : 2x + 4 = 10","3","2","4","6"],
+["Quelle est la racine carrée de 81 ?","9","8","7","10"],
+["Combien font 3² ?","9","6","12","3"],
+["Quel théorème utilise-t-on pour un triangle rectangle ?","Pythagore","Thalès","Fermat","Newton"],
+["Combien font 5 × 5 − 5 ?","20","25","15","30"]],
+"Physique-Chimie":[
+["Quelle est la formule chimique de l'eau ?","H₂O","CO₂","O₂","NaCl"],
+["L'unité de la tension électrique est le...","volt","watt","ampère","ohm"],
+["Le symbole chimique du fer est...","Fe","F","Fr","Ir"],
+["Eau + sel forme généralement un mélange...","homogène","hétérogène","gazeux","solide"],
+["La chute d'un objet est principalement due à...","la gravité","la lumière","le son","le magnétisme"]],
+"SVT":[
+["Quel organe pompe le sang ?","Le cœur","Les poumons","Le foie","L'estomac"],
+["La photosynthèse est réalisée principalement par...","les plantes vertes","les animaux","les champignons","les roches"],
+["Quel organe permet principalement de respirer ?","Les poumons","Le cœur","Les reins","L'estomac"],
+["Quel gaz est principalement absorbé lors de la respiration ?","Oxygène","Azote","Hydrogène","Hélium"],
+["La grossesse humaine dure environ...","9 mois","3 mois","6 mois","15 mois"]],
+"Histoire-Géo":[
+["La Côte d'Ivoire devient indépendante en...","1960","1958","1975","1945"],
+["Quelle est la capitale politique de la Côte d'Ivoire ?","Yamoussoukro","Abidjan","Bouaké","Korhogo"],
+["Quel est le plus long fleuve d'Afrique ?","Le Nil","Le Congo","Le Niger","La Volta"],
+["La Première Guerre mondiale commence en...","1914","1918","1939","1945"],
+["La Côte d'Ivoire se trouve sur quel continent ?","Afrique","Asie","Europe","Amérique"]],
+"Français":[
+["Quel est le pluriel de « cheval » ?","Chevaux","Chevals","Chevalx","Chevaus"],
+["Dans « Je vais à l'école », quel est le verbe ?","vais","je","école","à"],
+["Quel est le contraire de « grand » ?","petit","haut","long","large"],
+["Dans « Awa lit un livre », quel est le sujet ?","Awa","lit","livre","un"],
+["Une phrase qui se termine par un point et énonce une information est une phrase...","déclarative","interrogative","exclamative","impérative"]]
+};
+let subject='',qs=[],i=0,score=0,answered=false;
+function start(s){subject=s;qs=data[s].map(x=>({q:x[0],a:x[1],o:x.slice(1)})).sort(()=>Math.random()-.5);i=0;score=0;document.getElementById('home').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('quiz').classList.remove('hidden');document.getElementById('subject').textContent=subject;render();}
+function render(){answered=false;document.getElementById('next').classList.add('hidden');document.getElementById('counter').textContent=`Question ${i+1} / ${qs.length}`;document.getElementById('fill').style.width=((i)/qs.length*100)+'%';document.getElementById('question').textContent=qs[i].q;let box=document.getElementById('options');box.innerHTML='';[...qs[i].o].sort(()=>Math.random()-.5).forEach(v=>{let b=document.createElement('button');b.className='option';b.textContent=v;b.onclick=()=>answer(b,v);box.appendChild(b);});}
+function answer(btn,v){if(answered)return;answered=true;let ok=v===qs[i].a;if(ok)score++;document.querySelectorAll('.option').forEach(b=>{b.disabled=true;if(b.textContent===qs[i].a)b.classList.add('correct');});if(!ok)btn.classList.add('wrong');document.getElementById('next').classList.remove('hidden');}
+function nextQuestion(){i++;if(i<qs.length)render();else showResult();}
+function showResult(){document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.remove('hidden');document.getElementById('score').textContent=`${score} / ${qs.length}`;document.getElementById('message').textContent=score===5?'Excellent ! 🎓':score>=3?'Bravo, continue tes révisions ! 💪':'Courage ! Recommence le quiz et révise encore. 📖';}
+function goHome(){document.getElementById('quiz').classList.add('hidden');document.getElementById('result').classList.add('hidden');document.getElementById('home').classList.remove('hidden');}
+</script>
+</body>
+</html>
